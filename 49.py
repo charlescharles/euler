@@ -1,13 +1,18 @@
-N = int(1e4)
-prime = [True]*N
-prime[0] = prime[1] = False
-for i in range(2, N):
-    if prime[i]:
-        for j in map(lambda x: i*x, range(2, N/i+1)):
-            if j < N:
-                prime[j] = False
-four_primes = []
-for i in range(1000, N):
-    if prime[i]: four_primes.append(i)
+import pyprimes as pp
+import itertools as it
 
-print four_primes[:100]
+four_primes = []
+for p in pp.primes_above(1000):
+    if p >= 9999: break
+    four_primes.append(p)
+N = len(four_primes)
+
+def prime_perms():
+    for i in range(N):
+        for j in range(i+1, N):
+            a, b = four_primes[i], four_primes[j]
+            c = 2*b - a
+            if set(str(a)) == set(str(b)) == set(str(c)) and pp.isprime(c):
+                print a, b, c
+
+prime_perms()
